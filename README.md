@@ -39,7 +39,9 @@ server.listen(7000, () => {
 })
 ```
 
-6. Add model/init.js
+6. yarn add mongoose
+
+7. Add model/init.js
 ```javascript
 const mongoose = require('mongoose')
 
@@ -60,3 +62,26 @@ mongoose.connect(
 
 module.exports = mongoose
 ```
+
+8. yarn add axios
+
+9. Add model/seeds.js
+
+
+
+
+## User Stories
+### As a user
+1. To create weather data, I want to enter the amount of rainfall for each day
+2. To classify rainfall by city, I want to have a city field
+3. To get 
+
+
+## Dark Sky API
+Melbourne - 37.8136,144.9631
+Sydney - 33.8688,151.2093
+Wellington - 41.2865,174.7762
+
+
+## Model
+### 
