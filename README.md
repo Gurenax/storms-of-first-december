@@ -1,27 +1,14 @@
-# Storms
+# Storms of December
 
-1. yarn add express
-2. yarn add nodemon
-3. yarn add body-parser
+1. `yarn add express`
+2. `yarn add nodemon`
+3. `yarn add body-parser`
 
-4. Modify package.json
+4. Modify package.json scripts
 ```javascript
-{
-  "name": "api",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Glenn Dimaliwat <glenn.dimaliwat@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2"
-  },
-  "devDependencies": {
-    "nodemon": "^1.12.1"
-  },
-  "scripts": {
-    "dev": "nodemon server.js"
-  }
+"scripts": {
+  "dev": "nodemon server.js",
+  "seed": "node models/seeds.js"
 }
 ```
 
@@ -39,7 +26,7 @@ server.listen(7000, () => {
 })
 ```
 
-6. yarn add mongoose
+6. `yarn add mongoose`
 
 7. Add model/init.js
 ```javascript
@@ -63,11 +50,19 @@ mongoose.connect(
 module.exports = mongoose
 ```
 
-8. yarn add axios
+8. `yarn add axios`
 
 9. Add model/seeds.js
 
-10. Update seeds from Dark Sky API
+10. `yarn add dotenv`
+
+11. Add .env file and dotenv configuration in seeds file
+```javascript
+const dotenv = require('dotenv').config()
+const DARK_SKY_API_KEY = process.env.DARK_SKY_API_KEY
+```
+
+12. Update seeds from Dark Sky API
 ```javascript
 // Create data from Dark Sky API
 Promise.all([
