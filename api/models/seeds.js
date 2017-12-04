@@ -35,7 +35,7 @@ function epochToDate(epoch) {
 // Rainfall.remove( {} )
 //   .then( () => { console.log('Data destroyed!') })
 
-// Create data from Dark Sky API
+// // Create data from Dark Sky API
 // Promise.all([
 //   // Melbourne - December 1, 2017
 //   fetchForecast(melbourneCoordinates, dateToEpoch(new Date('2017-12-01'))),
