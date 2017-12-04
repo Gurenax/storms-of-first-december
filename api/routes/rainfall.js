@@ -5,27 +5,70 @@ const router = express.Router()
 
 // Read all rainfall or Run a query
 router.get('/rainfall', (req, res) => {
-  // const query = req.query
-  // // If ?completed= was specified
-  // if (query.completed) {
-  //   // Validate that completed value is specified as true or false
-  //   if(query.completed==='true'||query.completed==='false') {
-  //     Rainfall.find({ completed: query.completed })
-  //       // Once it has loaded these documents
-  //       .then(rainfall => {
-  //         // Send them back as the response
-  //         res.json(rainfall)
-  //       })
-  //       .catch(error => {
-  //         res.status(400).json({ error: error.message })
-  //       })
-  //   }
-  //   else {
-  //     // If not a valid value for completed
-  //     res.status(400).json({ error: `${query.completed} is not valid` })
-  //   }
-  // }
-  // else {
+  const query = req.query
+  // If ?city=, ?year=, ?month= was specified
+  if (query.city && query.year && query.month) {
+    const queryDateFrom = new Date(`${query.year}-${query.month}`)
+    const queryDateTo = new Date(query.year, queryDateFrom.getMonth() + 1, 0, 23, 59, 59)
+    console.log('queryDateFrom', queryDateFrom)
+    console.log('queryDateTo', queryDateTo)
+    
+    Rainfall.find({
+      city: query.city,
+      date : {
+        $gte : queryDateFrom,
+        $lte : queryDateTo
+      }
+    })
+    // Once it has loaded these documents
+    .then(rainfall => {
+      // Send them back as the response
+      res.json(rainfall)
+    })
+    .catch(error => {
+      res.status(400).json({ error: error.message })
+    })
+  }
+  // If ?city=, ?year= was specified
+  else if (query.city && query.year) {
+    const queryDateFrom = new Date(`${query.year}-01`)
+    const queryDateTo = new Date(`${query.year}-12-31 23:59:59`)
+    console.log('queryDateFrom', queryDateFrom)
+    console.log('queryDateTo', queryDateTo)
+    
+    Rainfall.find({
+      city: query.city,
+      date : {
+        $gte : queryDateFrom,
+        $lt : queryDateTo
+      }
+    })
+    // Once it has loaded these documents
+    .then(rainfall => {
+      // Send them back as the response
+      res.json(rainfall)
+    })
+    .catch(error => {
+      res.status(400).json({ error: error.message })
+    })
+  }
+  // If ?city=, ?month= was specified and no ?year
+  else if (query.city && query.month) {
+    res.status(400).json({ error: 'year parameter required' })
+  }
+  // If ?city= was specified
+  else if (query.city) {
+    Rainfall.find({ city: query.city })
+      // Once it has loaded these documents
+      .then(rainfall => {
+        // Send them back as the response
+        res.json(rainfall)
+      })
+      .catch(error => {
+        res.status(400).json({ error: error.message })
+      })
+  }
+  else {
     Rainfall.find()
       // Once it has loaded these documents
       .then(rainfall => {
@@ -35,7 +78,98 @@ router.get('/rainfall', (req, res) => {
       .catch(error => {
         res.status(400).json({ error: error.message })
       })
-  // }
+  }
+})
+
+
+const computeTotalRainfall = (rainfall) => {
+  return rainfall.reduce( (total, value) => {
+    return total + value.amount
+  }, 0)
+}
+
+const computeAverage = (total, numberOfItems) => {
+  return total / numberOfItems
+}
+
+const sortRainfallByAmount = (rainfall) => {
+  return rainfall.slice().sort( (a,b) => a.amount-b.amount )
+}
+
+const computeMaxRainfall = (sortedRainfall) => {
+  const dataLength = sortedRainfall.length
+  return sortedRainfall[dataLength - 1].amount
+}
+
+const computeMedianRainfall = (sortedRainfall) => {
+  const dataLength = sortedRainfall.length
+  if (dataLength === 0) return 0
+  
+  let median = 0
+  if (dataLength % 2 === 0) {
+    const item1 = parseInt( (dataLength+1) / 2 - 1)
+    const item2 = parseInt( (dataLength+1) / 2 )
+    const item1Amount = sortedRainfall[item1].amount
+    const item2Amount = sortedRainfall[item2].amount
+    median = (item1Amount + item2Amount) / 2
+  }
+  else {
+    const item = parseInt( (dataLength+1) / 2 - 1)
+    median = sortedRainfall[item].amount
+  }
+  return median
+}
+
+// Rainfall summary routes
+router.get('/rainfall/summary', (req, res) => {
+  const query = req.query
+
+  // If ?city=, ?year=, ?month= was specified
+  if (query.city && query.year && query.month) {
+    const queryDateFrom = new Date(`${query.year}-${query.month}`)
+    const queryDateTo = new Date(query.year, queryDateFrom.getMonth() + 1, 0, 23, 59, 59)
+
+    Rainfall.find({
+      city: query.city,
+      date : {
+        $gte : queryDateFrom,
+        $lt : queryDateTo
+      }
+    })
+    // Once it has loaded these documents
+    .then(rainfall => {
+      // Get length of rainfall array
+      const dataLength = rainfall.length
+      // Get total amount of rainfall
+      const total = computeTotalRainfall(rainfall)
+      // Get average daily rainfall
+      const average = computeAverage(total, dataLength)
+      // Sort rainfall data into sortedData array
+      const sortedData = sortRainfallByAmount(rainfall)
+      // Get max rainfall
+      const maxRainfall = computeMaxRainfall(sortedData)
+      // Get median      
+      const median = computeMedianRainfall(sortedData)
+      
+      // Send them back as the response
+      return res.json({ 
+        city: query.city,
+        month: query.month,
+        year: query.year,
+        totalRainfall: total,
+        averageDailyRain: average,
+        medianRainfall: median,
+        maxRainfall: maxRainfall,
+      })
+    })
+    .catch(error => {
+      res.status(400).json({ error: error.message })
+    })
+  }
+  else {
+    res.status(400).json({ error: 'city, year and month parameters required' })
+  }
+
 })
 
 // Read an individual rainfall
