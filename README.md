@@ -1,4 +1,4 @@
-# Storms of December
+# Storms of First December
 
 1. `yarn add express`
 2. `yarn add nodemon`
@@ -143,6 +143,16 @@ Promise.all([
     console.log(reason)
   })
 ```
+
+13. Add routes/rainfall.js with boilerplate routes
+14. Modify server.js
+```javascript
+server.use('/',[
+  require('./routes/rainfall')
+])
+```
+
+15. Add queries in routes
 
 
 ## User Stories
