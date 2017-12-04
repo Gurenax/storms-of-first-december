@@ -69,12 +69,12 @@ module.exports = mongoose
 
 
 
-
 ## User Stories
 ### As a user
 1. To create weather data, I want to enter the amount of rainfall for each day
-2. To classify rainfall by city, I want to have a city field
-3. To get 
+2. To classify rainfall by city, I want to have a city attribute
+3. To compute total amount of rainfall, I want to query by city and date (i.e. month/year)
+4. To compute average, median and max rainfall, I want to query by city and date (i.e. month/year)
 
 
 ## Dark Sky API
@@ -84,4 +84,45 @@ Wellington - 41.2865,174.7762
 
 
 ## Model
-### 
+### Rainfall
+- city: String
+- date: Date
+- amount: Number
+
+
+## Epoch Date Conversion
+To use the dark sky API, I needed to convert a date timestamp to epoch and vice versa
+```javascript
+// Converts a Date() to Epoch
+function dateToEpoch(date) {
+  return date.getTime() / 1000
+}
+
+// Converts an Epoch to Date()
+function epochToDate(epoch) {
+  const date = new Date(0)
+  date.setUTCSeconds(epoch)
+  return date
+}
+```
+
+
+## Routes
+To query all rainfall data
+```
+http://localhost:7000/rainfall
+```
+
+To query for a list of rainfall data `(year is required when month is specified)`
+```
+http://localhost:7000/rainfall?city=Melbourne&year=2017&month=12
+http://localhost:7000/rainfall?city=Melbourne&year=2017
+http://localhost:7000/rainfall?city=Melbourne
+```
+
+To query for a summary of rainfall data `(city, year and month required)`
+```
+http://localhost:7000/rainfall/summary?city=Melbourne&year=2017&month=12
+```
+
+The rest of the routes are standard `i.e. post, patch, delete, get`
