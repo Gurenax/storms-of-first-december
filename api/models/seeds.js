@@ -4,6 +4,8 @@ const axios = require('axios')
 const dotenv = require('dotenv').config()
 const DARK_SKY_API_KEY = process.env.DARK_SKY_API_KEY
 
+const {dateToEpoch, epochToDate} = require('../helpers/epoch')
+
 const darksky = axios.create({
   baseURL: 'https://api.darksky.net/forecast/'
 })
@@ -19,16 +21,6 @@ const wellingtonCoordinates = '41.2865,174.7762'
 function fetchForecast(coordinates, time) {
   if (!!time) return darksky.get(`/${DARK_SKY_API_KEY}/${coordinates},${time}`)
   else return darksky.get(`/${DARK_SKY_API_KEY}/${coordinates}`)
-}
-
-function dateToEpoch(date) {
-  return date.getTime() / 1000
-}
-
-function epochToDate(epoch) {
-  const date = new Date(0)
-  date.setUTCSeconds(epoch)
-  return date
 }
 
 // Delete all
