@@ -5,6 +5,10 @@ const server = express()
 
 server.use(bodyParser.json())
 
+server.use('/',[
+  require('./routes/rainfall')
+])
+
 server.listen(7000, () => {
   console.log('Started at http://localhost:7000')
 })
