@@ -46,7 +46,7 @@ router.get('/rainfall', (req, res) => {
       city: query.city,
       date : {
         $gte : queryDateFrom,
-        $lt : queryDateTo
+        $lte : queryDateTo
       }
     })
     // Once it has loaded these documents
