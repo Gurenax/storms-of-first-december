@@ -153,10 +153,10 @@ Promise.all([
 4. To compute average, median and max rainfall, I want to query by city and date (i.e. month/year)
 
 
-## Dark Sky API
-Melbourne - 37.8136,144.9631
-Sydney - 33.8688,151.2093
-Wellington - 41.2865,174.7762
+## Coordinates for Dark Sky API
+- Melbourne - 37.8136,144.9631
+- Sydney - 33.8688,151.2093
+- Wellington - 41.2865,174.7762
 
 
 ## Model
