@@ -70,7 +70,7 @@ class App extends Component {
   onChangeInputDate = (event) => {
     
   }
-  
+
   onChangeInputCity = (event) => {
 
   }
@@ -80,7 +80,7 @@ class App extends Component {
   }
 
   render() {
-    const { city, month, year, heading, results } = this.state
+    const { heading, results } = this.state
 
     return (
       <div className="App container-fluid">
