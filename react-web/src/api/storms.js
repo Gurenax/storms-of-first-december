@@ -5,16 +5,8 @@ import axios from 'axios'
 // })
 
 export const fetchRainfall = () => {
-  return axios.get('http://localhost:7000/rainfall', {
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
-    proxy: {
-      host: '10.1.5.4',
-      port: 7001
-    }
-  })
-    .then( res => res.json )
+  return axios.get('http://localhost:7000/rainfall/5a251c713d350edd7c64715d')
+    .then( res => res.data )
     .catch( err => {
       console.log(err)
     })
