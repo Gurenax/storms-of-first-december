@@ -13,23 +13,33 @@ import axios from 'axios'
 // }
 
 export const fetchRainfall = (city, year, month) => {
-  let url
+  let url = 'http://localhost:7000/rainfall'
   if (!!city && !!year && !!month) {
-    url = `http://localhost:7000/rainfall?city=${city}&year=${year}&month=${month}`
-  }
-  else if (!!city && !!year) {
-    url = `http://localhost:7000/rainfall?city=${city}&year=${year}`
-  }
-  else if (!!city) {
-    url = `http://localhost:7000/rainfall?city=${city}`
-  }
-  else {
-    url = 'http://localhost:7000/rainfall'
+    url += `?city=${city}&year=${year}&month=${month}`
+  } else if (!!city && !!year) {
+    url += `?city=${city}&year=${year}`
+  } else if (!!city) {
+    url += `?city=${city}`
   }
 
-  return axios.get(url)
-  .then( res => res.data )
-  .catch( err => {
-    console.log(err)
+  return axios
+    .get(url)
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+export const postRainfall = (city, date, amount) => {
+  let url = 'http://localhost:7000/rainfall'
+
+  let input = {
+    city: 'Brisbane',
+    date: '2017-12-06',
+    amount: 4
+  }
+
+  axios.post(url, input).then(res => {
+    console.log(res)
   })
 }

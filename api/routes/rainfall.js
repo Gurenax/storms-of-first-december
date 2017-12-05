@@ -96,6 +96,9 @@ router.get('/rainfall/summary', (req, res) => {
     const queryDateFrom = new Date(`${query.year}-${query.month}`)
     const queryDateTo = new Date(query.year, queryDateFrom.getMonth() + 1, 0, 23, 59, 59)
 
+    console.log('queryDateFrom', queryDateFrom)
+    console.log('queryDateTo', queryDateTo)
+    
     Rainfall.find({
       city: query.city,
       date : {

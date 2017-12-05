@@ -1,4 +1,5 @@
 import React from 'react'
+import { toMonthName } from '../helpers/month'
 
 const CityRain = ({
   city,
@@ -8,7 +9,7 @@ const CityRain = ({
 }) => {
   let subHeading
   if (city && month && year) {
-    subHeading = `Rainfall for ${city} on ${month}-${year}`
+    subHeading = `Rainfall for ${city} on ${toMonthName(month)} ${year}`
   }
   else if (city && year) {
     subHeading = `Rainfall for ${city} on ${year}`
@@ -19,7 +20,6 @@ const CityRain = ({
   else {
     subHeading = `All rainfall everywhere for ever`    
   }
-
 
   return (
     <div>

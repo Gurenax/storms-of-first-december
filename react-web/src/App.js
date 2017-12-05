@@ -4,7 +4,7 @@ import './App.css';
 import CityRain from './components/CityRain'
 
 /* Storms API */
-import { fetchRainfall } from './api/storms'
+import { fetchRainfall, postRainfall } from './api/storms'
 
 
 class App extends Component {
@@ -62,6 +62,23 @@ class App extends Component {
     })
   }
 
+  onClickAddData = (event) => {
+    console.log('Adding data...')
+    postRainfall()
+  }
+
+  onChangeInputDate = (event) => {
+    
+  }
+  
+  onChangeInputCity = (event) => {
+
+  }
+
+  onChangeInputAmount = (event) => {
+
+  }
+
   render() {
     const { city, month, year, heading, results } = this.state
 
@@ -82,6 +99,11 @@ class App extends Component {
           results = {results}
         />
         }
+
+        <input placeholder="Date" type="text" onChange={this.onChangeInputDate} /><br/>
+        <input placeholder="City" type="text" onChange={this.onChangeInputCity} /><br/>
+        <input placeholder="Amount" type="number" onChange={this.onChangeInputAmount} /><br/>
+        <button className='btn btn-primary' onClick={this.onClickAddData} >Add Data</button>
         
       </div>
     );
