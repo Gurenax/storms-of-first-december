@@ -5,9 +5,17 @@ import axios from 'axios'
 // })
 
 export const fetchRainfall = () => {
-  return axios.get('http://localhost:7000/rainfall/5a251c713d350edd7c64715d')
+  return axios.get('http://localhost:7000/rainfall/')
     .then( res => res.data )
     .catch( err => {
       console.log(err)
     })
+}
+
+export const fetchRainfallFromCity = (city) => {
+  return axios.get(`http://localhost:7000/rainfall?city=${city}`)
+  .then( res => res.data )
+  .catch( err => {
+    console.log(err)
+  })
 }
