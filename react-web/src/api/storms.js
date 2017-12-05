@@ -1,19 +1,11 @@
 import axios from 'axios'
 
-// const api = axios.create({
-//   baseUrl: 'https://api.darksky.net/'
-// })
-
-// export const fetchRainfall = () => {
-//   return axios.get('http://localhost:7000/rainfall/')
-//     .then( res => res.data )
-//     .catch( err => {
-//       console.log(err)
-//     })
-// }
+const api = axios.create({
+  baseURL: 'http://localhost:7000'
+})
 
 export const fetchRainfall = (city, year, month) => {
-  let url = 'http://localhost:7000/rainfall'
+  let url = '/rainfall'
   if (!!city && !!year && !!month) {
     url += `?city=${city}&year=${year}&month=${month}`
   } else if (!!city && !!year) {
@@ -22,7 +14,7 @@ export const fetchRainfall = (city, year, month) => {
     url += `?city=${city}`
   }
 
-  return axios
+  return api
     .get(url)
     .then(res => res.data)
     .catch(err => {
