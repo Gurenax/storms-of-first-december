@@ -1,0 +1,23 @@
+POST http://localhost:7000/rainfall
+Content-Type: application/json
+
+{
+  "city" : "Brisbane",
+  "date" : "2017-12-05",
+  "amount" : 5
+}
+
+###
+
+PATCH http://localhost:7000/rainfall/5a25e0647b8d5f018c69cfbc
+Content-Type: application/json
+
+{
+  "city" : "Brisbane",
+  "date" : "2017-12-05",
+  "amount" : 3
+}
+
+###
+
+DELETE http://localhost:7000/rainfall/5a25e0647b8d5f018c69cfbc
