@@ -27,9 +27,9 @@ const CityRain = ({
         {subHeading}
       </h2>
       <ul>
-        {results.map(result => {
+        {results.map( (result, index) => {
           return (
-            <li>
+            <li key={`Rainfall-${index}`}>
               {result.date} - {result.city} - {result.amount}
             </li>
           )
