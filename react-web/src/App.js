@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import CityRain from './components/CityRain'
 
 /* Storms API */
-import { fetchRainfall, fetchRainfallFromCity } from './api/storms'
+import { fetchRainfall } from './api/storms'
 
 
 class App extends Component {
@@ -11,18 +12,29 @@ class App extends Component {
     city: null,
     month: null,
     year: null,
+    heading: {
+      city: null,
+      month: null,
+      year: null
+    },
     results: []
   }
   
   /* Events */
   onClickGetRainfallData = (event) => {
-    const { city } = this.state
+    const { city, year, month } = this.state
     
-    fetchRainfallFromCity(city)
+    fetchRainfall(city, year, month)
       .then( data => {
         this.setState ( (prevState) => {
-          const results = Object.assign(prevState.results, data)
+          
+          const results = data.length > 0 ? Object.assign(prevState.results, data) : []
           return {
+            heading: {
+              city: city,
+              month: month,
+              year: year
+            },
             results: results
           }
         })
@@ -51,7 +63,7 @@ class App extends Component {
   }
 
   render() {
-    const { city, month, year, results } = this.state
+    const { city, month, year, heading, results } = this.state
 
     return (
       <div className="App container-fluid">
@@ -62,14 +74,15 @@ class App extends Component {
         <input placeholder="Year" type="number" onChange={this.onChangeUpdateYear} min="1900" max="9999" /><br/>
         <input placeholder="City" type="text" onChange={this.onChangeUpdateCity} /><br/>
         
-        <h2>Rainfall for {city} on {month}-{year}</h2>
-        <ul>
-          {results.map( result => {
-            return(
-              <li>{result.date} - {result.city} - {result.amount}</li>
-            )
-          })}
-        </ul>
+        {results.length>0 &&
+        <CityRain 
+          city = {heading.city}
+          month = {heading.month}
+          year = {heading.year}
+          results = {results}
+        />
+        }
+        
       </div>
     );
   }
